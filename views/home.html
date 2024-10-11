@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lego Collection</title>
+    <link href="/css/main.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+
+    <!-- Navbar -->
+    <nav class="bg-gray-800 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="/" class="text-white text-2xl font-bold">Lego Collection</a>
+            <div class="flex space-x-4">
+                <a href="/about" class="text-white">About</a>
+                <details class="relative">
+                    <summary class="text-white cursor-pointer">Theme</summary>
+                    <div class="absolute bg-gray-700 p-2 rounded mt-2 shadow-lg">
+                        <a href="/lego/sets?theme=Technic" class="block text-white px-4 py-2 hover:bg-gray-600">Technic</a>
+                        <a href="/lego/sets?theme=City" class="block text-white px-4 py-2 hover:bg-gray-600">City</a>
+                        <a href="/lego/sets?theme=Star Wars" class="block text-white px-4 py-2 hover:bg-gray-600">Star Wars</a>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero bg-red-500 py-16 text-center">
+        <div class="container mx-auto">
+            <h1 class="text-4xl text-yellow-500 font-bold">Explore Our Lego Collection</h1>
+            <p class="text-white mt-4">Browse through our amazing sets and themes!</p>
+            <a href="/lego/sets" class="btn btn-primary mt-6">Browse Sets</a>
+        </div>
+    </section>
+
+    <!-- Lego Sets Grid -->
+    <section class="container mx-auto my-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Card 1: Hard-coded example -->
+            <div class="card bg-white shadow-lg">
+                <img src="https://cdn.rebrickable.com/media/sets/001-1.jpg" alt="Set 001-1" class="w-full h-48 object-cover">
+                <div class="p-4">
+                    <h2 class="text-xl font-bold">Gears</h2>
+                    <p class="text-gray-600 mt-2">This set from 1965 includes 43 parts. It was one of the earliest Lego Technic sets.</p>
+                    <a href="/lego/sets/001-1" class="btn btn-primary mt-4">View Set</a>
+                </div>
+            </div>
+
+            <!-- Card 2: Hard-coded example -->
+            <div class="card bg-white shadow-lg">
+                <img src="https://cdn.rebrickable.com/media/sets/002-1.jpg" alt="Set 002-1" class="w-full h-48 object-cover">
+                <div class="p-4">
+                    <h2 class="text-xl font-bold">Truck</h2>
+                    <p class="text-gray-600 mt-2">A classic truck set from 1970, featuring 50 parts, popular in the City theme.</p>
+                    <a href="/lego/sets/002-1" class="btn btn-primary mt-4">View Set</a>
+                </div>
+            </div>
+
+            <!-- Card 3: Hard-coded example -->
+            <div class="card bg-white shadow-lg">
+                <img src="https://cdn.rebrickable.com/media/sets/003-1.jpg" alt="Set 003-1" class="w-full h-48 object-cover">
+                <div class="p-4">
+                    <h2 class="text-xl font-bold">Space Rocket</h2>
+                    <p class="text-gray-600 mt-2">This rocket set from 1980 includes 100 parts and is part of the Star Wars theme.</p>
+                    <a href="/lego/sets/003-1" class="btn btn-primary mt-4">View Set</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>

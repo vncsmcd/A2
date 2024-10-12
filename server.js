@@ -12,13 +12,15 @@
 *
 ********************************************************************************/
 
-
 const express = require('express');
 const path = require('path');
 const legoData = require('./modules/legoSets');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Serve static files from the "public" directory
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Initialize the legoData
 legoData.initialize()
@@ -30,9 +32,6 @@ legoData.initialize()
     .catch(err => {
         console.error("Failed to initialize legoData:", err);
     });
-
-// Serve static files from the "public" directory
-app.use(express.static('public'));
 
 // Route for the home page
 app.get('/', (req, res) => {
@@ -73,7 +72,3 @@ app.use((req, res) => {
     res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
 });
 
-app.set('views', __dirname + '/views');
-app.use(express.static(__dirname + '/public'));
-require('pg'); // explicitly require the "pg" module
-const Sequelize = require('sequelize');

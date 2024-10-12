@@ -73,3 +73,7 @@ app.use((req, res) => {
     res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
 });
 
+app.set('views', __dirname + '/views');
+app.use(express.static(__dirname + '/public'));
+require('pg'); // explicitly require the "pg" module
+const Sequelize = require('sequelize');

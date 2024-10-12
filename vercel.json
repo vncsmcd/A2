@@ -14,5 +14,6 @@
   ],
   "includeFiles": [
     "public/**", 
-    "views/**"  
+    "views/**" 
+  ]
 }

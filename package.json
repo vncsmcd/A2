@@ -4,10 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "build": "npm run tw:build", 
-    "tw:build": "tailwindcss build -i ./public/css/tailwind.css -o ./public/css/main.css"
+    "tw:build": "tailwindcss build -i ./public/css/tailwind.css -o ./public/css/main.css",
+    "prestart": "npm run tw:build"
   }
   ,
   "author": "Vinicius Leal",

@@ -1,14 +1,17 @@
 /********************************************************************************
-*  WEB322 – Assignment 02
+*  WEB322 – Assignment 03
 * 
 *  I declare that this assignment is my own work in accordance with Seneca's
 *  Academic Integrity Policy:
 * 
 *  https://www.senecacollege.ca/about/policies/academic-integrity-policy.html
 * 
-*  Name: Vinicius Leal Student ID: 152826228  Date:09/23/2024
+*  Name: Vinicius Leal Student ID: 152826228 Date: 10/11/2024
+*
+*  Published URL: https://a3-nu-bice.vercel.app/
 *
 ********************************************************************************/
+
 
 const express = require('express');
 const path = require('path');

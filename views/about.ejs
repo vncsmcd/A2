@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <link href="/css/main.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+    <%- include('partials/navbar', { page: '/about' }) %>
+
+    <!-- Hero Section -->
+    <section class="hero bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500 text-white py-16 text-center">
+        <div class="container mx-auto">
+            <h1 class="text-5xl font-extrabold">About Us</h1>
+            <p class="text-lg mt-4">All about our Lego collection and passion for building</p>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="container mx-auto my-12 px-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <!-- Left column with image -->
+            <div>
+                <img src="https://assets.lego.com/logos/v4.5.0/brand-lego.svg" alt="About Us Image" class="rounded-lg shadow-md w-full">
+            </div>
+
+            <!-- Right column with text -->
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-3xl font-bold mb-4">Who We Are</h2>
+                <p class="text-lg mb-6">
+                    We are a team of passionate Lego enthusiasts who have been collecting, building, and sharing our Lego sets for years. 
+                    Our goal is to bring together other Lego fans and inspire creativity with our vast collection.
+                </p>
+                <h3 class="text-2xl font-semibold mb-4">A Little About Me</h3>
+                <p class="text-lg">
+                    I'm Vinicius, a WEB322 student, coursing the third semester of the CPP program at Seneca College. 
+                    Surviving through the last semester of the Markham Campus (R.I.P. dear campus). 
+                    Besides this course, I'm also taking OOP345, DBS311, SYD366, and a course about Myths and Legends as a general knowledge requirement.
+                </p>
+                <p class="text-lg mt-4">
+                    It's crazy to juggle all of the content with work and personal life, submitting assignments minutes before the due time, but it's worth the stress... 
+                    I think...
+                </p>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

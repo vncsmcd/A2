@@ -1,0 +1,41 @@
+<nav class="bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500 p-4 shadow-lg">
+    <div class="container mx-auto flex justify-between items-center">
+        <!-- Logo -->
+        <a href="/" class="text-white text-3xl font-extrabold">Lego Collection</a>
+        
+        <!-- Responsive Hamburger Menu -->
+        <button id="menu-button" class="text-white lg:hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+        </button>
+
+        <!-- Navigation Links -->
+        <ul id="menu" class="hidden lg:flex space-x-6">
+            <li>
+                <a href="/about" class="text-white hover:text-yellow-200 text-lg <%= (page == '/about') ? 'font-bold underline' : '' %>">
+                    About
+                </a>
+            </li>
+            <li>
+                <a href="/lego/sets" class="text-white hover:text-yellow-200 text-lg <%= (page == '/lego/sets') ? 'font-bold underline' : '' %>">
+                    View Collection
+                </a>
+            </li>
+            <li>
+                <a href="/lego/addSet" class="text-white hover:text-yellow-200 text-lg <%= (page == '/lego/addSet') ? 'font-bold underline' : '' %>">
+                    Add to Collection
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Responsive Menu Script -->
+<script>
+    const menuButton = document.getElementById('menu-button');
+    const menu = document.getElementById('menu');
+    menuButton.addEventListener('click', () => {
+        menu.classList.toggle('hidden');
+    });
+</script>

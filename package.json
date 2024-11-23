@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "tw:build": "tailwindcss build -i ./public/css/tailwind.css -o ./public/css/main.css",
-    "prestart": "npm run tw:build"
+    "postinstall": "npm install pg",
+    "tw:build": "tailwindcss build -i ./public/css/tailwind.css -o ./public/css/main.css"
   },
   "author": "Vinicius Leal",
   "license": "ISC",
@@ -14,18 +14,13 @@
     "@tailwindcss/typography": "^0.5.15",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
-    "express": "^4.21.0",
+    "express": "^4.21.1",
     "pg": "^8.13.1",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.5"
   },
   "devDependencies": {
-    "daisyui": "^4.12.13",
-    "tailwindcss": "^3.4.13"
-  },
-  "scripts": {
-    "start": "node server.js",
-    "postinstall": "npm install pg"
-}
-  
+    "daisyui": "^4.12.14",
+    "tailwindcss": "^3.4.15"
+  }
 }

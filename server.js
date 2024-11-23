@@ -11,7 +11,6 @@
 *  Published URL: ___________________________________________________________ 
 * 
 ********************************************************************************/ 
-const pg = require('pg');
 const express = require('express');
 const path = require('path');
 const legoData = require('./modules/legoSets');

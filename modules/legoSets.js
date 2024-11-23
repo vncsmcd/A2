@@ -11,33 +11,19 @@
 ********************************************************************************/
 
 require('dotenv').config({ path: './db.env' });
-const pg = require('pg');
 const { Sequelize } = require('sequelize');
 
 
 // Initialize Sequelize
-const sequelize = new Sequelize(process.env.DB_DATABASE, process.env.DB_USER, process.env.DB_PASSWORD, {
+let sequelize = new Sequelize(process.env.DB_DATABASE, process.env.DB_USER, process.env.DB_PASSWORD, {
     host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
     dialect: 'postgres',
-    dialectModule: require('pg'),
+    port: 5432,
     dialectOptions: {
-        ssl: {
-            require: true,
-            rejectUnauthorized: false,
-        },
-    },
-});
-
-
-sequelize
-  .authenticate()
-  .then(() => {
-    console.log('Connection has been established successfully.');
-  })
-  .catch((err) => {
-    console.log('Unable to connect to the database:', err);
+      ssl: { rejectUnauthorized: false },
+    }
   });
+
 
 // Define Theme Model
 const Theme = sequelize.define('Theme', {
@@ -55,34 +41,26 @@ const Theme = sequelize.define('Theme', {
 });
 
 // Define Set Model
-const Set = sequelize.define('Set', {
-    set_num: {
-      type: Sequelize.STRING,
-      primaryKey: true,
-    },
-    name: {
-      type: Sequelize.STRING,
-      allowNull: false,
-    },
-    year: {
-      type: Sequelize.INTEGER,
-    },
-    num_parts: {
-      type: Sequelize.INTEGER,
-    },
-    theme_id: {
-      type: Sequelize.INTEGER,
-      references: {
-        model: Theme, 
-        key: 'id', 
+const Set = sequelize.define(
+    'Set',
+    {
+      set_num: {
+        type: Sequelize.STRING,
+        primaryKey: true, 
       },
+      name: Sequelize.STRING,
+      year: Sequelize.INTEGER,
+      num_parts: Sequelize.INTEGER,
+      theme_id: Sequelize.INTEGER,
+      img_url: Sequelize.STRING
     },
-    img_url: {
-      type: Sequelize.STRING,
-    },
-  }, {
-    timestamps: false,
-});
+    {
+      createdAt: false, 
+      updatedAt: false,
+    }
+  );
+  
+
 
 Set.belongsTo(Theme, { foreignKey: 'theme_id' });
 

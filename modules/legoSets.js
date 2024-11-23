@@ -19,6 +19,7 @@ let sequelize = new Sequelize(process.env.DB_DATABASE, process.env.DB_USER, proc
     dialect: 'postgres',
     port: 5432,
     dialectOptions: {
+        require: true,
       ssl: { rejectUnauthorized: false },
     }
   });

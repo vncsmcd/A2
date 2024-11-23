@@ -22,5 +22,10 @@
   "devDependencies": {
     "daisyui": "^4.12.13",
     "tailwindcss": "^3.4.13"
-  }
+  },
+  "scripts": {
+    "start": "node server.js",
+    "postinstall": "npm install pg"
+}
+  
 }

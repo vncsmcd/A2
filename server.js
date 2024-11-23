@@ -8,8 +8,7 @@
 *  
 *  Name: Vinicius Macedo Pereira Leal Student ID: 152826228 Date: 11/22/2024
 * 
-*  Published URL: ___________________________________________________________ 
-* 
+*  Published URL: https://a5-alpha-eight.vercel.app/
 ********************************************************************************/ 
 const express = require('express');
 const legoData = require('./modules/legoSets');

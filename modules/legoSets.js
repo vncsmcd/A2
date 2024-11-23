@@ -10,9 +10,8 @@
 *
 ********************************************************************************/
 
-require('dotenv').config({ path: './db.env' });
-const { Sequelize } = require('sequelize');
-
+require('dotenv').config();
+const Sequelize = require('sequelize');
 
 // Initialize Sequelize
 let sequelize = new Sequelize(process.env.DB_DATABASE, process.env.DB_USER, process.env.DB_PASSWORD, {

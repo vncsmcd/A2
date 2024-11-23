@@ -12,14 +12,9 @@
 * 
 ********************************************************************************/ 
 const express = require('express');
-const path = require('path');
 const legoData = require('./modules/legoSets');
-const { getAllThemes, addSet } = require("./modules/legoSets"); 
-
-
 const app = express();
 const PORT = process.env.PORT || 3000;
-
 
 app.use(express.urlencoded({ extended: true }));
 
@@ -27,7 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 
 // Serve static files from the "public" directory
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('public'));
 
 // Middleware to parse JSON bodies
 app.use(express.json());
@@ -77,35 +72,30 @@ app.get('/lego/sets/:setNum', (req, res) => {
         .catch(err => res.status(404).json({ error: err.message }));
 });
 
-
-
+// Route to add a new Lego set
 app.get('/lego/addSet', async (req, res) => {
     try {
-        const themes = await getAllThemes(); // Fetch themes from the database
-        console.log("Fetched themes:", themes); // Log fetched themes to verify
+        const themes = await legoData.getAllThemes(); // Fetch themes from the database
         res.render('addSet', { themes }); // Pass themes to the view
     } catch (err) {
-        console.error("Error in GET /lego/addSet:", err); // Log the error
+        console.error("Error in GET /lego/addSet:", err);
         res.render('500', { message: `An error occurred: ${err.message}` });
     }
 });
 
-// Route: POST /lego/addSet
-app.post("/lego/addSet", async (req, res) => {
-    const setData = req.body; // Extract form data from request body
+app.post('/lego/addSet', async (req, res) => {
     try {
-        await addSet(setData); // Add the new set using the Promise-based function
+        await legoData.addSet(req.body); // Add the new set
         res.redirect("/lego/sets"); // Redirect to the collection page
     } catch (err) {
-        console.error(err); // Log the error for debugging
+        console.error(err);
         res.render("500", {
             message: `I'm sorry, but we have encountered the following error: ${err.message}`
         });
     }
 });
 
-
-// Route: GET /lego/editSet/:setNum
+// Route to edit a Lego set
 app.get('/lego/editSet/:setNum', async (req, res) => {
     try {
         const set = await legoData.getSetByNum(req.params.setNum); // Fetch the set details
@@ -117,7 +107,6 @@ app.get('/lego/editSet/:setNum', async (req, res) => {
     }
 });
 
-// Route: POST /lego/editSet/:setNum
 app.post('/lego/editSet/:setNum', async (req, res) => {
     try {
         await legoData.updateSet(req.params.setNum, req.body); // Update set with new data
@@ -128,15 +117,11 @@ app.post('/lego/editSet/:setNum', async (req, res) => {
     }
 });
 
-// Route: POST /lego/deleteSet/:setNum
+// Route to delete a Lego set
 app.get('/lego/deleteSet/:setNum', async (req, res) => {
     try {
         const setNum = req.params.setNum;
-
-        // Fetch the set to confirm it exists
-        const set = await legoData.getSetByNum(setNum);
-
-        // If the set exists, render the delete confirmation view
+        const set = await legoData.getSetByNum(setNum); // Fetch the set to confirm it exists
         res.render('delete', { set });
     } catch (err) {
         console.error("Error in GET /lego/deleteSet/:setNum:", err);
@@ -147,20 +132,13 @@ app.get('/lego/deleteSet/:setNum', async (req, res) => {
 app.post('/lego/deleteSet/:setNum', async (req, res) => {
     try {
         const setNum = req.params.setNum;
-
-        // Call the deleteSet function to delete the record from the database
-        await legoData.deleteSet(setNum);
-
-        // Render the success page
+        await legoData.deleteSet(setNum); // Delete the set
         res.render('deleteSuccess');
     } catch (err) {
         console.error("Error in POST /lego/deleteSet/:setNum:", err);
-
-        // Render the 404 page if the set does not exist or there's an error
         res.status(404).render('404', { message: err.message });
     }
 });
-
 
 // Custom 404 Error Handling
 app.use((req, res) => {
@@ -172,7 +150,3 @@ app.use((err, req, res, next) => {
     console.error(err.stack); 
     res.status(500).render('500', { error: err }); 
 });
-
-
-
-

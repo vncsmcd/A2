@@ -25,7 +25,7 @@
             <label class="label font-semibold text-gray-600">
                 <span class="label-text">Set Name</span>
             </label>
-            <input type="text" name="name" value="<%= set.name %>" class="input input-bordered w-full" required>
+            <input type="text" name="name" value="<%= set.name %>" class="input input-bordered w-full bg-white text-gray-800" required>
         </div>
 
         <!-- Year -->
@@ -33,7 +33,7 @@
             <label class="label font-semibold text-gray-600">
                 <span class="label-text">Year</span>
             </label>
-            <input type="number" name="year" value="<%= set.year %>" class="input input-bordered w-full" required>
+            <input type="number" name="year" value="<%= set.year %>" class="input input-bordered w-full bg-white text-gray-800" required>
         </div>
 
         <!-- Number of Parts -->
@@ -41,7 +41,7 @@
             <label class="label font-semibold text-gray-600">
                 <span class="label-text">Number of Parts</span>
             </label>
-            <input type="number" name="num_parts" value="<%= set.num_parts %>" class="input input-bordered w-full" required>
+            <input type="number" name="num_parts" value="<%= set.num_parts %>" class="input input-bordered w-full bg-white text-gray-800" required>
         </div>
 
         <!-- Image URL -->
@@ -49,7 +49,7 @@
             <label class="label font-semibold text-gray-600">
                 <span class="label-text">Image URL</span>
             </label>
-            <input type="url" name="img_url" value="<%= set.img_url %>" class="input input-bordered w-full" required>
+            <input type="url" name="img_url" value="<%= set.img_url %>" class="input input-bordered w-full bg-white text-gray-800" required>
         </div>
 
         <!-- Theme -->
@@ -57,7 +57,7 @@
             <label class="label font-semibold text-gray-600">
                 <span class="label-text">Theme</span>
             </label>
-            <select name="theme_id" class="select select-bordered w-full" required>
+            <select name="theme_id" class="select select-bordered w-full bg-white text-gray-800" required>
                 <% themes.forEach(theme => { %>
                     <option value="<%= theme.id %>" <%= set.theme_id == theme.id ? "selected" : "" %>>
                         <%= theme.name %>
@@ -71,7 +71,7 @@
             <label class="label font-semibold text-gray-600">
                 <span class="label-text">Set Number</span>
             </label>
-            <input type="text" name="set_num" value="<%= set.set_num %>" readonly class="input input-bordered w-full bg-gray-100 cursor-not-allowed">
+            <input type="text" name="set_num" value="<%= set.set_num %>" readonly class="input input-bordered w-full bg-gray-100 text-gray-800 cursor-not-allowed">
         </div>
 
         <!-- Update Button -->

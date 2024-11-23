@@ -1,11 +1,11 @@
 {
   "name": "a2",
   "version": "1.0.0",
-  "description": "",
+  "description": "Lego Collection Web App",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "postinstall": "npm install pg",
+    "build": "npm run tw:build",
     "tw:build": "tailwindcss build -i ./public/css/tailwind.css -o ./public/css/main.css"
   },
   "author": "Vinicius Leal",

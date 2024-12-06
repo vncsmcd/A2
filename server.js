@@ -1,14 +1,15 @@
 /******************************************************************************** 
-*  WEB322 – Assignment 05
+*  WEB322 – Assignment 06
 *  
 *  I declare that this assignment is my own work in accordance with Seneca's 
 *  Academic Integrity Policy: 
 *  
 *  https://www.senecacollege.ca/about/policies/academic-integrity-policy.html 
 *  
-*  Name: Vinicius Macedo Pereira Leal Student ID: 152826228 Date: 11/22/2024
+*  Name: Vinicius Macedo Pereira Leal Student ID: 152826228 Date: 12/06/2024
 * 
-*  Published URL: https://a5-alpha-eight.vercel.app/
+*  Published URL: https://a6-dun.vercel.app
+
 ********************************************************************************/ 
 const express = require('express');
 const clientSessions = require('client-sessions');

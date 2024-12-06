@@ -11,13 +11,16 @@
 *  Published URL: https://a5-alpha-eight.vercel.app/
 ********************************************************************************/ 
 const express = require('express');
+const clientSessions = require('client-sessions');
 const legoData = require('./modules/legoSets');
+const authData = require('./modules/auth-service.js');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Middleware for URL-encoded bodies
 app.use(express.urlencoded({ extended: true }));
 
-// Set the view engine
+// Set EJS as the view engine
 app.set('view engine', 'ejs');
 
 // Serve static files from the "public" directory
@@ -26,79 +29,147 @@ app.use(express.static('public'));
 // Middleware to parse JSON bodies
 app.use(express.json());
 
-// Initialize the legoData
+// Configure client-sessions middleware
+app.use(clientSessions({
+    cookieName: "session",
+    secret: "this_is_a_secret", // Replace with a secure random string
+    duration: 2 * 60 * 60 * 1000, // Session duration: 2 hours
+    activeDuration: 1000 * 60 * 5, // Extend session by 5 minutes if active
+}));
+
+// Middleware to make session data available to views
+app.use((req, res, next) => {
+    res.locals.session = req.session;
+    next();
+});
+
+// Middleware to ensure the user is logged in
+const ensureLogin = (req, res, next) => {
+    if (!req.session.user) {
+        return res.redirect('/login');
+    }
+    next();
+};
+
+// Initialize services in the correct order
 legoData.initialize()
+    .then(authData.initialize)
     .then(() => {
         app.listen(PORT, () => {
             console.log(`Server is running on port ${PORT}`);
         });
     })
     .catch(err => {
-        console.error("Failed to initialize legoData:", err);
+        console.error("Failed to initialize services:", err);
     });
 
-// Route for the home page
+// Routes
+
+// Home page
 app.get('/', (req, res) => {
     res.render("home");
 });
 
-// Route for the about page
+// About page
 app.get('/about', (req, res) => {
     res.render("about");
 });
 
-// Route to get all Lego sets or sets by theme
+
+app.get('/register', (req, res) => {
+    res.render('register', { errorMessage: null, successMessage: null, userName: '' });
+});
+
+app.post('/register', (req, res) => {
+    authData.registerUser(req.body)
+        .then(() => {
+            res.render('register', { successMessage: "User created successfully!", errorMessage: null, userName: '' });
+        })
+        .catch((err) => {
+            res.render('register', { errorMessage: err, successMessage: null, userName: req.body.userName });
+        });
+});
+
+// GET /login
+app.get('/login', (req, res) => {
+  res.render('login', { errorMessage: null, userName: '' }); // Reset userName to blank
+});
+
+// POST /login
+app.post('/login', (req, res) => {
+  req.body.userAgent = req.get('User-Agent');
+  authData.checkUser(req.body)
+      .then((user) => {
+          req.session.user = {
+              userName: user.userName,
+              email: user.email,
+              loginHistory: user.loginHistory,
+          };
+          res.redirect('/lego/sets'); // Redirect on successful login
+      })
+      .catch((err) => {
+          console.error("Login error:", err); // Log error details
+          res.render('login', { errorMessage: err.message, userName: '' }); // Clear userName on error
+      });
+});
+
+
+app.get('/logout', (req, res) => {
+    req.session.reset();
+    res.redirect('/');
+});
+
+app.get('/userHistory', ensureLogin, (req, res) => {
+    res.render('userHistory');
+});
+
+// Lego Sets Management
 app.get('/lego/sets', (req, res) => {
     const theme = req.query.theme;
 
     if (theme) {
         legoData.getSetsByTheme(theme)
             .then(sets => res.render("sets", { sets }))
-            .catch(err => res.status(404).json({ error: err.message }));
+            .catch(err => res.status(404).render("404", { message: err.message }));
     } else {
         legoData.getAllSets()
             .then(sets => res.render("sets", { sets }))
-            .catch(err => res.status(404).json({ error: err.message }));
+            .catch(err => res.status(404).render("404", { message: err.message }));
     }
 });
 
-// Route to get a Lego set by its set number
 app.get('/lego/sets/:setNum', (req, res) => {
     const setNum = req.params.setNum;
 
     legoData.getSetByNum(setNum)
         .then(set => res.render("set", { set }))
-        .catch(err => res.status(404).json({ error: err.message }));
+        .catch(err => res.status(404).render("404", { message: err.message }));
 });
 
-// Route to add a new Lego set
-app.get('/lego/addSet', async (req, res) => {
+app.get('/lego/addSet', ensureLogin, async (req, res) => {
     try {
-        const themes = await legoData.getAllThemes(); // Fetch themes from the database
-        res.render('addSet', { themes }); // Pass themes to the view
+        const themes = await legoData.getAllThemes();
+        res.render('addSet', { themes });
     } catch (err) {
         console.error("Error in GET /lego/addSet:", err);
         res.render('500', { message: `An error occurred: ${err.message}` });
     }
 });
 
-app.post('/lego/addSet', async (req, res) => {
+app.post('/lego/addSet', ensureLogin, async (req, res) => {
     try {
-        await legoData.addSet(req.body); // Add the new set
-        res.redirect("/lego/sets"); // Redirect to the collection page
+        await legoData.addSet(req.body);
+        res.redirect("/lego/sets");
     } catch (err) {
-        console.error(err);
-        res.render("500", {
-            message: `I'm sorry, but we have encountered the following error: ${err.message}`
-        });
+        console.error("Error in POST /lego/addSet:", err);
+        res.render("500", { message: `An error occurred: ${err.message}` });
     }
 });
 
-// Route to edit a Lego set
-app.get('/lego/editSet/:setNum', async (req, res) => {
+app.get('/lego/editSet/:setNum', ensureLogin, async (req, res) => {
     try {
-        const set = await legoData.getSetByNum(req.params.setNum); // Fetch the set details
-        const themes = await legoData.getAllThemes(); // Fetch themes for dropdown
+        const set = await legoData.getSetByNum(req.params.setNum);
+        const themes = await legoData.getAllThemes();
         res.render('editSet', { set, themes });
     } catch (err) {
         console.error("Error in GET /lego/editSet/:setNum:", err);
@@ -106,21 +177,20 @@ app.get('/lego/editSet/:setNum', async (req, res) => {
     }
 });
 
-app.post('/lego/editSet/:setNum', async (req, res) => {
+app.post('/lego/editSet/:setNum', ensureLogin, async (req, res) => {
     try {
-        await legoData.updateSet(req.params.setNum, req.body); // Update set with new data
-        res.redirect('/lego/sets'); // Redirect to the sets listing
+        await legoData.updateSet(req.params.setNum, req.body);
+        res.redirect('/lego/sets');
     } catch (err) {
         console.error("Error in POST /lego/editSet/:setNum:", err);
         res.render('500', { message: `An error occurred: ${err.message}` });
     }
 });
 
-// Route to delete a Lego set
-app.get('/lego/deleteSet/:setNum', async (req, res) => {
+app.get('/lego/deleteSet/:setNum', ensureLogin, async (req, res) => {
     try {
         const setNum = req.params.setNum;
-        const set = await legoData.getSetByNum(setNum); // Fetch the set to confirm it exists
+        const set = await legoData.getSetByNum(setNum);
         res.render('delete', { set });
     } catch (err) {
         console.error("Error in GET /lego/deleteSet/:setNum:", err);
@@ -128,10 +198,10 @@ app.get('/lego/deleteSet/:setNum', async (req, res) => {
     }
 });
 
-app.post('/lego/deleteSet/:setNum', async (req, res) => {
+app.post('/lego/deleteSet/:setNum', ensureLogin, async (req, res) => {
     try {
         const setNum = req.params.setNum;
-        await legoData.deleteSet(setNum); // Delete the set
+        await legoData.deleteSet(setNum);
         res.render('deleteSuccess');
     } catch (err) {
         console.error("Error in POST /lego/deleteSet/:setNum:", err);
@@ -139,13 +209,18 @@ app.post('/lego/deleteSet/:setNum', async (req, res) => {
     }
 });
 
-// Custom 404 Error Handling
+// Error Handling
 app.use((req, res) => {
-    res.status(404).render("404", { message: "I'm sorry, we're unable to find what you're looking for" });
+    res.status(404).render("404", { message: "Page not found" });
 });
 
-// Error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack); 
-    res.status(500).render('500', { error: err }); 
+    res.status(500).render('500', { error: err.message }); 
+});
+
+
+app.use((req, res, next) => {
+  res.set('Cache-Control', 'no-store');
+  next();
 });

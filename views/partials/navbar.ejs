@@ -22,11 +22,46 @@
                     View Collection
                 </a>
             </li>
-            <li>
-                <a href="/lego/addSet" class="text-white hover:text-yellow-200 text-lg <%= (page == '/lego/addSet') ? 'font-bold underline' : '' %>">
-                    Add to Collection
-                </a>
-            </li>
+            <% if (session && session.user) { %>
+                <li>
+                    <a href="/lego/addSet" class="text-white hover:text-yellow-200 text-lg <%= (page == '/lego/addSet') ? 'font-bold underline' : '' %>">
+                        Add to Collection
+                    </a>
+                </li>
+                <li>
+                    <details class="relative group">
+                        <summary class="text-white cursor-pointer text-lg">Account: <%= session.user.userName %></summary>
+                        <ul class="hidden group-hover:block absolute bg-white text-black p-4 shadow-lg rounded space-y-2">
+                            <li>
+                                <a href="/userHistory" class="hover:text-blue-500 <%= (page == '/userHistory') ? 'font-bold underline' : '' %>">
+                                    User History
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/logout" class="hover:text-blue-500">Log Out</a>
+                            </li>
+                        </ul>
+                    </details>
+                </li>
+            <% } else { %>
+                <li>
+                    <details class="relative group">
+                        <summary class="text-white cursor-pointer text-lg">Account</summary>
+                        <ul class="hidden group-hover:block absolute bg-white text-black p-4 shadow-lg rounded space-y-2">
+                            <li>
+                                <a href="/login" class="hover:text-blue-500 <%= (page == '/login') ? 'font-bold underline' : '' %>">
+                                    Login
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/register" class="hover:text-blue-500 <%= (page == '/register') ? 'font-bold underline' : '' %>">
+                                    Register
+                                </a>
+                            </li>
+                        </ul>
+                    </details>
+                </li>
+            <% } %>
         </ul>
     </div>
 </nav>

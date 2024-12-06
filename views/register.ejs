@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link href="/css/main.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <%- include('partials/navbar', { page: '/register' }) %>
+
+    <div class="container mx-auto py-16">
+        <div class="max-w-lg mx-auto bg-white rounded-lg shadow-md p-8">
+            <h1 class="text-3xl font-bold text-center mb-6">Register</h1>
+            <% if (!successMessage) { %>
+                <form method="POST" action="/register">
+                    <div class="mb-4">
+                        <label for="userName" class="block text-gray-700 font-medium">User Name:</label>
+                        <input 
+                            type="text" 
+                            id="userName" 
+                            name="userName" 
+                            class="input input-bordered w-full text-white placeholder-white" 
+                            placeholder="Enter your username" 
+                            required 
+                            value="<%= userName %>">
+                    </div>
+                    <div class="mb-4">
+                        <label for="email" class="block text-gray-700 font-medium">Email Address:</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            class="input input-bordered w-full text-white placeholder-white" 
+                            placeholder="Enter your email address" 
+                            required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="password" class="block text-gray-700 font-medium">Password:</label>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            class="input input-bordered w-full text-white placeholder-white" 
+                            placeholder="Enter your password" 
+                            required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="password2" class="block text-gray-700 font-medium">Confirm Password:</label>
+                        <input 
+                            type="password" 
+                            id="password2" 
+                            name="password2" 
+                            class="input input-bordered w-full text-white placeholder-white" 
+                            placeholder="Confirm your password" 
+                            required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-full">Register</button>
+                </form>
+                <% if (errorMessage) { %>
+                    <div class="alert alert-error mt-6">
+                        <span><%= errorMessage %></span>
+                    </div>
+                <% } %>
+            <% } else { %>
+                <div class="alert alert-success">
+                    <span><%= successMessage %></span>
+                </div>
+                <a href="/login" class="btn btn-success mt-6 block text-center">Proceed to Log in</a>
+            <% } %>
+        </div>
+    </div>
+</body>
+</html>

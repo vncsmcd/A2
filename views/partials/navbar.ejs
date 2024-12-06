@@ -1,76 +1,74 @@
-<nav class="bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500 p-4 shadow-lg">
-    <div class="container mx-auto flex justify-between items-center">
-        <!-- Logo -->
-        <a href="/" class="text-white text-3xl font-extrabold">Lego Collection</a>
-        
-        <!-- Responsive Hamburger Menu -->
-        <button id="menu-button" class="text-white lg:hidden">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-            </svg>
-        </button>
-
-        <!-- Navigation Links -->
-        <ul id="menu" class="hidden lg:flex space-x-6">
-            <li>
-                <a href="/about" class="text-white hover:text-yellow-200 text-lg <%= (page == '/about') ? 'font-bold underline' : '' %>">
-                    About
-                </a>
-            </li>
-            <li>
-                <a href="/lego/sets" class="text-white hover:text-yellow-200 text-lg <%= (page == '/lego/sets') ? 'font-bold underline' : '' %>">
-                    View Collection
-                </a>
-            </li>
-            <% if (session && session.user) { %>
-                <li>
-                    <a href="/lego/addSet" class="text-white hover:text-yellow-200 text-lg <%= (page == '/lego/addSet') ? 'font-bold underline' : '' %>">
-                        Add to Collection
-                    </a>
-                </li>
-                <li>
-                    <details class="relative group">
-                        <summary class="text-white cursor-pointer text-lg">Account: <%= session.user.userName %></summary>
-                        <ul class="hidden group-hover:block absolute bg-white text-black p-4 shadow-lg rounded space-y-2">
-                            <li>
-                                <a href="/userHistory" class="hover:text-blue-500 <%= (page == '/userHistory') ? 'font-bold underline' : '' %>">
-                                    User History
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/logout" class="hover:text-blue-500">Log Out</a>
-                            </li>
-                        </ul>
-                    </details>
-                </li>
-            <% } else { %>
-                <li>
-                    <details class="relative group">
-                        <summary class="text-white cursor-pointer text-lg">Account</summary>
-                        <ul class="hidden group-hover:block absolute bg-white text-black p-4 shadow-lg rounded space-y-2">
-                            <li>
-                                <a href="/login" class="hover:text-blue-500 <%= (page == '/login') ? 'font-bold underline' : '' %>">
-                                    Login
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/register" class="hover:text-blue-500 <%= (page == '/register') ? 'font-bold underline' : '' %>">
-                                    Register
-                                </a>
-                            </li>
-                        </ul>
-                    </details>
-                </li>
-            <% } %>
-        </ul>
+<div class="navbar bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500 p-4 shadow-lg">
+    <!-- Logo -->
+    <div class="flex-1">
+      <a class="text-white text-3xl font-extrabold" href="/">Lego Collection</a>
     </div>
-</nav>
-
-<!-- Responsive Menu Script -->
-<script>
-    const menuButton = document.getElementById('menu-button');
-    const menu = document.getElementById('menu');
-    menuButton.addEventListener('click', () => {
-        menu.classList.toggle('hidden');
-    });
-</script>
+  
+    <!-- Dropdown for Small Screens -->
+    <div class="dropdown sm:hidden">
+      <label tabindex="0" class="btn btn-ghost text-white">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+        </svg>
+      </label>
+      <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-white text-gray-800 rounded-box w-52">
+        <li><a href="/lego/sets" class="hover:text-yellow-500">View Collection</a></li>
+        <li><a href="/about" class="hover:text-yellow-500">About</a></li>
+  
+        <% if (session.user) { %>
+          <li>
+            <details>
+              <summary class="hover:text-yellow-500">Account: <%= session.user.userName %></summary>
+              <ul class="p-2">
+                <li><a href="/lego/addSet" class="hover:text-yellow-500">Add to Collection</a></li>
+                <li><a href="/userHistory" class="hover:text-yellow-500">User History</a></li>
+                <li><a href="/logout" class="hover:text-yellow-500">Log Out</a></li>
+              </ul>
+            </details>
+          </li>
+        <% } else { %>
+          <li>
+            <details>
+              <summary class="hover:text-yellow-500">Account</summary>
+              <ul class="p-2">
+                <li><a href="/login" class="hover:text-yellow-500">Login</a></li>
+                <li><a href="/register" class="hover:text-yellow-500">Register</a></li>
+              </ul>
+            </details>
+          </li>
+        <% } %>
+      </ul>
+    </div>
+  
+    <!-- Navbar for Larger Screens -->
+    <div class="navbar-center hidden sm:flex">
+      <ul class="menu menu-horizontal px-1 text-white">
+        <li><a href="/lego/sets" class="hover:text-yellow-200">View Collection</a></li>
+        <li><a href="/about" class="hover:text-yellow-200">About</a></li>
+  
+        <% if (session.user) { %>
+          <li>
+            <details>
+              <summary class="hover:text-yellow-200">Account: <%= session.user.userName %></summary>
+              <ul class="p-2 bg-white text-gray-800 rounded shadow">
+                <li><a href="/lego/addSet" class="hover:text-yellow-500">Add to Collection</a></li>
+                <li><a href="/userHistory" class="hover:text-yellow-500">User History</a></li>
+                <li><a href="/logout" class="hover:text-yellow-500">Log Out</a></li>
+              </ul>
+            </details>
+          </li>
+        <% } else { %>
+          <li>
+            <details>
+              <summary class="hover:text-yellow-200">Account</summary>
+              <ul class="p-2 bg-white text-gray-800 rounded shadow">
+                <li><a href="/login" class="hover:text-yellow-500">Login</a></li>
+                <li><a href="/register" class="hover:text-yellow-500">Register</a></li>
+              </ul>
+            </details>
+          </li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+  
